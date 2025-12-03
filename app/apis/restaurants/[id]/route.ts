@@ -44,6 +44,6 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
         return NextResponse.json({success: true})
 
     }catch(error) {
-        return NextResponse.json({error: "Failed to delete restaurant"}, {status: 500})
+        return NextResponse.json({error: `Failed to delete restaurant: ${error}`}, {status: 500})
     }
 }
