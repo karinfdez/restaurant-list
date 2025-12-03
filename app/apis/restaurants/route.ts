@@ -3,7 +3,7 @@ import {restaurantSchema} from "@/lib/schemas/restaurant"
 import {NextResponse} from "next/server"
 
 export async function GET() {
-    return getRestaurants()
+    return NextResponse.json(getRestaurants(), {status: 200})
 }
 
 
@@ -25,6 +25,7 @@ export async function POST(request: Request) {
             ...rest,
             priceRange: price
         })
+
         return NextResponse.json({restaurant}, {status: 201})
     }catch (error) {
         return NextResponse.json({error: "Failed to add restaurant"}, {status: 500})

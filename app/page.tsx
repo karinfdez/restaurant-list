@@ -1,7 +1,6 @@
 // first commit
 'use client'
 import {useQuery} from '@tanstack/react-query'
-import {getRestaurants} from '@/lib/db'
 import RestaurantCard from '@/components/restaurant-card'
 import {Button} from '@/components/ui/button'
 import { useState } from 'react'
@@ -12,10 +11,12 @@ import {NewRestaurantForm} from '@/components/new-restaurant-form'
 import {NewRestaurantFormData} from '@/types/restaurant'
 import { toast } from "sonner"
 import {Skeleton} from '@/components/ui/skeleton'
+import {useQueryClient} from '@tanstack/react-query'
 
 export default function Home() {
 
   const [openModal, setOpenModal] = useState(false)
+  const queryClient = useQueryClient()
   const form = useForm({
     resolver: zodResolver(restaurantSchema),
     defaultValues: {
@@ -23,21 +24,27 @@ export default function Home() {
       type: "",
       image: "",
       location: "",
-      rating: 0,
+      rating: undefined,
       price: "$$",
       description: ""
     }
   })
   const {data: restaurants, isLoading, error} = useQuery({
     queryKey: ['restaurants'],
-    queryFn: () => getRestaurants(),
+    queryFn: async () => {
+      const response = await fetch('/apis/restaurants');
+      if (!response.ok) {
+        throw new Error('Failed to fetch restaurants');
+      }
+      return response.json();
+    },
     staleTime: 5 * 60 * 1000 // 5 minute
   })
 
   const onSubmit = async (data: NewRestaurantFormData) => {
 
     try {
-      const response = await fetch('/api/restaurants', {
+      const response = await fetch('/apis/restaurants', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -53,6 +60,9 @@ export default function Home() {
 
       if(restaurant) {
         form.reset();
+        // Invalidate stale data
+        queryClient.invalidateQueries({ queryKey: ['restaurants'] });
+        toast.success("Restaurant added successfully!");
       } 
       setOpenModal(false);
 
