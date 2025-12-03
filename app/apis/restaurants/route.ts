@@ -19,7 +19,12 @@ export async function POST(request: Request) {
                 { status: 400 }
             )
         }
-        const restaurant =  addRestaurant(validatedData.data)
+
+        const { price, ...rest } = validatedData.data
+        const restaurant = addRestaurant({
+            ...rest,
+            priceRange: price
+        })
         return NextResponse.json({restaurant}, {status: 201})
     }catch (error) {
         return NextResponse.json({error: "Failed to add restaurant"}, {status: 500})
