@@ -32,7 +32,7 @@ export default function Home() {
       <h1>My Restaurant List</h1>
       <div className="mt-4">
         {restaurants && restaurants.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {restaurants.map((restaurant) => (
             <RestaurantCard 
               key={restaurant.id} 

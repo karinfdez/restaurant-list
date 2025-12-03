@@ -8,14 +8,14 @@ interface RestaurantCardProps {
 
 export default function RestaurantCard({item}: RestaurantCardProps) {
     return (
-        <Card className="group relative overflow-hidden cursor-pointer h-64">
+        <Card className="group relative overflow-hidden cursor-pointer h-80">
             <CardContent className="p-0 h-full relative">
                 {/* Full background image */}
                 <Image 
                     src={item.image} 
                     alt={item.name} 
                     fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="object-cover transition-transform duration-300"
                 />
                 
                 {/* Dark overlay for better text readability */}
@@ -39,7 +39,7 @@ export default function RestaurantCard({item}: RestaurantCardProps) {
                 </div>
                 
                 {/* Sliding description overlay - hidden by default, slides up on hover */}
-                <div className="absolute inset-0 bg-black/10 backdrop-blur-sm text-white p-4 flex flex-col justify-center items-center translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+                <div className="absolute inset-0 bg-black/10 backdrop-blur-sm text-white p-4 flex flex-col justify-center items-center translate-y-full group-hover:translate-y-0 transition-transform duration-400 ease-in-out">
                     <div className="text-center">
                         <h3 className="font-bold text-xl mb-2">{item.name}</h3>
                         <p className="text-white/90 text-sm mb-3">{item.type} • {item.location}</p>
