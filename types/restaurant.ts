@@ -5,7 +5,7 @@ export type Restaurant = {
     type: string
     image: string
     location: string
-    rating: number
+    rating?: number
     price: string
     description?: string
   }
