@@ -4,14 +4,24 @@ import {NextResponse} from "next/server"
 
 export async function PATCH(request: Request, { params }: { params: { id: string } }) {
     const body = await request.json()
-    const validatedData = restaurantSchema.safeParse(body)
-    if(!validatedData.success) {
+    const {id} = body
+
+    if(!id) {
         return NextResponse.json(
-            { error: validatedData.error.flatten().fieldErrors },
-            { status: 400 }
+            {error: "Invalid id"},
+            {status: 400}
         )
     }
-    return updateRestaurant(params.id, validatedData.data)
+
+    const validatedData = restaurantSchema.safeParse(body)
+
+    if(!validatedData.success) {
+        return NextResponse.json(
+            {error: validatedData.error.flatten().fieldErrors},
+            {status: 400}
+        )
+    }
+    return updateRestaurant(id, validatedData.data)
 }
 
 
