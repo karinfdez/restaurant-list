@@ -33,9 +33,9 @@ export default function RestaurantCard({item}: RestaurantCardProps) {
                 </div>
                 
                 {/* Restaurant title - bottom overlay */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/20 to-transparent p-4">
-                    <h3 className="text-white font-bold text-lg">{item.name}</h3>
-                    <p className="text-white/80 text-sm">{item.type} • {item.location}</p>
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-4 min-h-[100px]">
+                    <h3 className="text-white font-bold text-lg text-shadow-lg">{item.name}</h3>
+                    <p className="text-white/90 text-sm text-shadow-sm">{item.type} • {item.location}</p>
                 </div>
                 
                 {/* Sliding description overlay - hidden by default, slides up on hover */}
