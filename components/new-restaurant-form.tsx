@@ -8,7 +8,7 @@ import {Button} from '@/components/ui/button'
 import {NewRestaurantFormData} from '@/types/restaurant'
 import {UseFormReturn} from 'react-hook-form'
 
-export const NewRestaurantForm = ({form, onSubmit}: {form: UseFormReturn<NewRestaurantFormData>, onSubmit: (data: NewRestaurantFormData) => void}) => {
+export const NewRestaurantForm = ({form, onSubmit, setOpenModal}: {form: UseFormReturn<NewRestaurantFormData>, onSubmit: (data: NewRestaurantFormData) => void, setOpenModal: (open: boolean) => void}) => {
     
 
     return (
@@ -64,10 +64,37 @@ export const NewRestaurantForm = ({form, onSubmit}: {form: UseFormReturn<NewRest
                 name="image"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Image URL</FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://example.com/image.jpg" {...field} />
-                    </FormControl>
+                    <FormLabel>Restaurant Image</FormLabel>
+                    <div className="space-y-2">
+                      <FormControl>
+                        <Input 
+                          type="file" 
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              // Convert file to base64 or handle upload
+                              const reader = new FileReader();
+                              reader.onload = (event) => {
+                                field.onChange(event.target?.result as string);
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                          className="cursor-pointer"
+                        />
+                      </FormControl>
+                      {/* <div className="text-sm text-muted-foreground">
+                        Or enter an Unsplash URL:
+                      </div>
+                      <FormControl>
+                        <Input 
+                          placeholder="https://unsplash.com/photos/..." 
+                          value={typeof field.value === 'string' && field.value.startsWith('http') ? field.value : ''}
+                          onChange={(e) => field.onChange(e.target.value)}
+                        />
+                      </FormControl> */}
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -91,6 +118,28 @@ export const NewRestaurantForm = ({form, onSubmit}: {form: UseFormReturn<NewRest
                         <SelectItem value="$$$$">$$$$ - Very Expensive</SelectItem>
                       </SelectContent>
                     </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="rating"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Rating (Optional)</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        step="0.1" 
+                        min="0" 
+                        max="5" 
+                        placeholder="e.g., 4.2" 
+                        value={field.value || ""}
+                        onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
