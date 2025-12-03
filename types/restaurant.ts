@@ -10,3 +10,14 @@ export type Restaurant = {
     reviews?: number
     description?: string
   }
+
+  export type NewRestaurantFormData = {
+    name: string
+    type: string
+    image: string
+    location: string
+    rating?: number
+    price: "$$" | "$$$" | "$$$$"
+    description?: string
+    priceRange: string
+  }
