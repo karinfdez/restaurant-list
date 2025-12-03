@@ -6,6 +6,7 @@ export type Restaurant = {
     image: string
     location: string
     rating?: number
-    price: string
+    priceRange: string
+    reviews?: number
     description?: string
   }
