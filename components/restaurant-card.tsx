@@ -4,6 +4,7 @@ import {Button} from '@/components/ui/button'
 import {Edit} from 'lucide-react'
 import Image from 'next/image'
 import {DeleteDialog} from '@/components/ui/dialog'
+import {useState, useEffect} from 'react'
 
 interface RestaurantCardProps {
   item: Restaurant
@@ -12,8 +13,30 @@ interface RestaurantCardProps {
 }
 
 export default function RestaurantCard({item, deleteRestaurant, editRestaurant}: RestaurantCardProps) {
+    const [isExpanded, setIsExpanded] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        const checkIfMobile = () => {
+            const hasTouch = 'ontouchstart' in window
+            const isSmallScreen = window.innerWidth < 1024
+            
+            setIsMobile(hasTouch || isSmallScreen)
+        }
+        
+        checkIfMobile()
+        window.addEventListener('resize', checkIfMobile)
+        
+        return () => window.removeEventListener('resize', checkIfMobile)
+    }, [])
+
+    const handleCardClick = () => {
+        if (isMobile) {
+            setIsExpanded(!isExpanded)
+        }
+    }
     return (
-        <Card className="group relative overflow-hidden cursor-pointer h-80">
+        <Card className="group relative overflow-hidden cursor-pointer h-80" onClick={handleCardClick}>
             <CardContent className="p-0 h-full relative">
                 {/* Full background image */}
                 <Image 
@@ -46,8 +69,8 @@ export default function RestaurantCard({item, deleteRestaurant, editRestaurant}:
                     <p className="text-white/90 text-sm text-shadow-sm">{item.type} • {item.location}</p>
                 </div>
                 
-                {/* Edit and detete buttons */}
-                <div className="absolute bottom-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
+                {/* Edit and delete buttons */}
+                <div className={`absolute bottom-3 right-3 z-10 transition-opacity duration-300 flex gap-2 ${(isMobile && isExpanded) ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
                     <Button 
                         size="sm" 
                         variant="secondary"
@@ -66,7 +89,7 @@ export default function RestaurantCard({item, deleteRestaurant, editRestaurant}:
                 </div>
                 
                 {/* Sliding description overlay */}
-                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm text-white p-4 flex flex-col justify-center items-center translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
+                <div className={`absolute inset-0 bg-black/60 backdrop-blur-sm text-white p-4 flex flex-col justify-center items-center transition-transform duration-300 ease-in-out ${(isMobile && isExpanded) ? 'translate-y-0' : 'translate-y-full group-hover:translate-y-0'}`}>
                     <div className="text-center">
                         <h3 className="font-bold text-xl mb-2">{item.name}</h3>
                         <p className="text-white/90 text-sm mb-3">{item.type} • {item.location}</p>
