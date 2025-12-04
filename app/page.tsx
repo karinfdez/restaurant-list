@@ -12,6 +12,7 @@ import {NewRestaurantFormData} from '@/types/restaurant'
 import { toast } from "sonner"
 import {Skeleton} from '@/components/ui/skeleton'
 import {useQueryClient} from '@tanstack/react-query'
+import {Restaurant} from '@/types/restaurant'
 
 export default function Home() {
 
@@ -127,7 +128,7 @@ export default function Home() {
           
           {restaurants && restaurants.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {restaurants.map((restaurant) => (
+            {restaurants.map((restaurant: Restaurant) => (
               <RestaurantCard 
                 key={restaurant.id} 
                 item={restaurant}

@@ -7,9 +7,13 @@ import {Textarea} from '@/components/ui/textarea'
 import {Button} from '@/components/ui/button'
 import {NewRestaurantFormData} from '@/types/restaurant'
 import {UseFormReturn} from 'react-hook-form'
+import { useEffect } from 'react'
 
 export const NewRestaurantForm = ({form, onSubmit, setOpenModal}: {form: UseFormReturn<NewRestaurantFormData>, onSubmit: (data: NewRestaurantFormData) => void, setOpenModal: (open: boolean) => void}) => {
     
+    useEffect(() => {
+        form.reset();
+    }, [form]);
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 flex items-center justify-center p-4">
@@ -160,7 +164,7 @@ export const NewRestaurantForm = ({form, onSubmit, setOpenModal}: {form: UseForm
               />
               
               <div className="flex gap-2 pt-4">
-                <Button type="submit" variant="secondary" className="flex-1">Add Restaurant</Button>
+                <Button type="submit" variant="solid" className="flex-1">Add Restaurant</Button>
                 <Button type="button" onClick={() => setOpenModal(false)}>Cancel</Button>
               </div>
             </form>

@@ -3,6 +3,7 @@
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { XIcon, Trash2 } from "lucide-react"
+import {Button} from "./button"
 
 import { cn } from "@/lib/utils"
 
@@ -60,7 +61,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
+          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 border p-6 shadow-lg duration-200 sm:max-w-lg",
           className
         )}
         {...props}
@@ -84,7 +85,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-header"
-      className={cn("flex flex-col gap-2 text-center sm:text-left", className)}
+      className={cn("flex flex-col gap-6 text-center sm:text-left", className)}
       {...props}
     />
   )
@@ -132,33 +133,35 @@ function DialogDescription({
 function DeleteDialog({ restName, onConfirm }: { restName: string, onConfirm: () => void }) {
   return (
     <Dialog>
+      {/* Delete trash icon button */}
       <DialogTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 h-8 px-2">
-        <Trash2 className="h-3 w-3" />
+        <Trash2 className="h-4 w-4" />
       </DialogTrigger>
 
       {/* The actual modal window */}
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you sure?</DialogTitle>
+          <DialogTitle>Delete {restName ? `${restName} restaurant` : 'this restaurant'}?</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete {restName ? restName : 'this restaurant'} ? This action is permanent and cannot be undone.
+           This action is permanent and cannot be undone.
           </DialogDescription>
         </DialogHeader>
 
-        <DialogFooter>
-          {/* closes the dialog */}
-          <DialogClose className="px-4 py-2 border rounded-md">
-            Cancel
-          </DialogClose>
-
-          {/* Confirm button */}
-          <DialogClose asChild>
-            <button
+        <DialogFooter className="mt-4">
+           {/* Confirm button */}
+           <DialogClose asChild>
+            <Button
+              variant="solid"
               onClick={onConfirm}
-              className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700"
             >
               Delete
-            </button>
+            </Button>
+          </DialogClose>
+          {/* closes the dialog */}
+          <DialogClose asChild>
+            <Button variant="default">
+              Cancel
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
