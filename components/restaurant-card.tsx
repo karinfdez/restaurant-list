@@ -72,18 +72,16 @@ export default function RestaurantCard({item, deleteRestaurant, editRestaurant}:
                         <p className="text-white/90 text-sm mb-3">{item.type} • {item.location}</p>
                         <p className="text-white/80 text-sm leading-relaxed mb-4">{item.description}</p>
                         <div className="flex items-center justify-center gap-4 text-sm">
-                            {item.reviews && (
+                            {item.rating && (
                                 <>
                                      <div className="flex items-center gap-1">
                                         <span>⭐</span>
                                         <span>{item.rating}</span>
-                                        <span className="text-white/60">({item.reviews} reviews)</span>
                                      </div>
                                     <span className="text-white/60">•</span>
                                 </>
                                
                             )}
-                            
                             <span className="font-medium">{item.price}</span>
                         </div>
                     </div>

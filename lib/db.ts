@@ -13,7 +13,6 @@ let restaurants: Restaurant[] = [
         location: '847 Valencia Street, San Francisco, CA',
         price: '$$$',
         rating: 4.8,
-        reviews: 290,
         description: 'Authentic Mexican cuisine with handcrafted tortillas and premium tequila selection in a vibrant, colorful atmosphere.'
     },
     {
@@ -24,7 +23,6 @@ let restaurants: Restaurant[] = [
         location: '1205 Pine Street, Seattle, WA',
         price: '$$$$',
         rating: 4.9,
-        reviews: 456,
         description: 'Traditional omakase experience with the freshest fish flown in daily from Tokyo\'s Tsukiji market.'
     },
     {
@@ -35,7 +33,6 @@ let restaurants: Restaurant[] = [
         location: '342 Mulberry Street, New York, NY',
         price: '$$',
         rating: 4.6,
-        reviews: 782,
         description: 'Family-owned trattoria serving homemade pasta and wood-fired pizzas using recipes passed down for generations.'
     },
     {
@@ -46,7 +43,6 @@ let restaurants: Restaurant[] = [
         location: '789 Bourbon Street, New Orleans, LA',
         price: '$$$$',
         rating: 4.7,
-        reviews: 234,
         description: 'Elegant French bistro featuring classic dishes with a modern Louisiana twist and an extensive wine cellar.'
     },
     {
@@ -57,7 +53,6 @@ let restaurants: Restaurant[] = [
         location: '156 Devon Avenue, Chicago, IL',
         price: '$$',
         rating: 4.4,
-        reviews: 567,
         description: 'Aromatic Indian cuisine with traditional tandoor cooking and a diverse menu spanning multiple regional specialties.'
     },
     {
@@ -68,7 +63,6 @@ let restaurants: Restaurant[] = [
         location: '2890 Ocean Drive, Miami, FL',
         price: '$$$',
         rating: 4.5,
-        reviews: 389,
         description: 'Waterfront dining featuring the freshest local catch with panoramic views of Biscayne Bay and innovative preparations.'
     },
     {
@@ -79,7 +73,6 @@ let restaurants: Restaurant[] = [
         location: '445 University Avenue, Austin, TX',
         price: '$',
         rating: 4.3,
-        reviews: 623,
         description: 'Authentic Thai street food in a casual setting with bold flavors and traditional recipes from Bangkok\'s markets.'
     },
     {
@@ -90,7 +83,6 @@ let restaurants: Restaurant[] = [
         location: '1567 Main Street, Nashville, TN',
         price: '$$',
         rating: 4.2,
-        reviews: 445,
         description: 'Farm-to-table American cuisine featuring locally sourced ingredients and craft cocktails in a rustic, welcoming atmosphere.'
     }
 ]
