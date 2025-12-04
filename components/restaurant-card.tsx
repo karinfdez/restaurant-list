@@ -8,15 +8,16 @@ import {DeleteDialog} from '@/components/ui/dialog'
 interface RestaurantCardProps {
   item: Restaurant
   deleteRestaurant: (id: string) => void
+  editRestaurant: (restaurant: Restaurant) => void
 }
 
-export default function RestaurantCard({item, deleteRestaurant}: RestaurantCardProps) {
+export default function RestaurantCard({item, deleteRestaurant, editRestaurant}: RestaurantCardProps) {
     return (
         <Card className="group relative overflow-hidden cursor-pointer h-80">
             <CardContent className="p-0 h-full relative">
                 {/* Full background image */}
                 <Image 
-                    src={item.image} 
+                    src={item.image}
                     alt={item.name} 
                     fill
                     placeholder="blur"
@@ -36,7 +37,7 @@ export default function RestaurantCard({item, deleteRestaurant}: RestaurantCardP
                 
                 {/* Price range badge */}
                 <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-black px-2 py-1 rounded-full text-xs font-medium">
-                    {item.priceRange}
+                    {item.price}
                 </div>
                 
                 {/* Restaurant title */}
@@ -53,7 +54,7 @@ export default function RestaurantCard({item, deleteRestaurant}: RestaurantCardP
                         className="h-8 px-2 hover:bg-blue-700 text-white text-xs"
                         onClick={(e) => {
                             e.stopPropagation();
-                            onEdit(item.id);
+                            editRestaurant(item);
                         }}
                     >
                         <Edit className="h-3 w-3" />
@@ -77,7 +78,7 @@ export default function RestaurantCard({item, deleteRestaurant}: RestaurantCardP
                                 <span className="text-white/60">({item.reviews} reviews)</span>
                             </div>
                             <span className="text-white/60">•</span>
-                            <span className="font-medium">{item.priceRange}</span>
+                            <span className="font-medium">{item.price}</span>
                         </div>
                     </div>
                 </div>
