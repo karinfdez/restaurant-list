@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { XIcon } from "lucide-react"
+import { XIcon, Trash2 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -129,6 +129,43 @@ function DialogDescription({
   )
 }
 
+function DeleteDialog({ restName, onConfirm }: { restName: string, onConfirm: () => void }) {
+  return (
+    <Dialog>
+      <DialogTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 h-8 px-2">
+        <Trash2 className="h-3 w-3" />
+      </DialogTrigger>
+
+      {/* The actual modal window */}
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Are you sure?</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to delete {restName ? restName : 'this restaurant'} ? This action is permanent and cannot be undone.
+          </DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter>
+          {/* closes the dialog */}
+          <DialogClose className="px-4 py-2 border rounded-md">
+            Cancel
+          </DialogClose>
+
+          {/* Confirm button */}
+          <DialogClose asChild>
+            <button
+              onClick={onConfirm}
+              className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700"
+            >
+              Delete
+            </button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export {
   Dialog,
   DialogClose,
@@ -140,4 +177,5 @@ export {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
+  DeleteDialog
 }

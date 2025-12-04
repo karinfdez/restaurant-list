@@ -1,12 +1,16 @@
 import {Restaurant} from '@/types/restaurant'
 import {Card, CardContent} from '@/components/ui/card'
+import {Button} from '@/components/ui/button'
+import {Edit} from 'lucide-react'
 import Image from 'next/image'
+import {DeleteDialog} from '@/components/ui/dialog'
 
 interface RestaurantCardProps {
   item: Restaurant
+  deleteRestaurant: (id: string) => void
 }
 
-export default function RestaurantCard({item}: RestaurantCardProps) {
+export default function RestaurantCard({item, deleteRestaurant}: RestaurantCardProps) {
     return (
         <Card className="group relative overflow-hidden cursor-pointer h-80">
             <CardContent className="p-0 h-full relative">
@@ -39,6 +43,25 @@ export default function RestaurantCard({item}: RestaurantCardProps) {
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-4 min-h-[100px]">
                     <h3 className="text-white font-bold text-lg text-shadow-lg">{item.name}</h3>
                     <p className="text-white/90 text-sm text-shadow-sm">{item.type} • {item.location}</p>
+                </div>
+                
+                {/* Edit and detete buttons */}
+                <div className="absolute bottom-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
+                    <Button 
+                        size="sm" 
+                        variant="secondary"
+                        className="h-8 px-2 hover:bg-blue-700 text-white text-xs"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onEdit(item.id);
+                        }}
+                    >
+                        <Edit className="h-3 w-3" />
+                    </Button>
+                    <DeleteDialog 
+                        restName={item.name}
+                        onConfirm={() => deleteRestaurant(item.id)}
+                    />
                 </div>
                 
                 {/* Sliding description overlay */}

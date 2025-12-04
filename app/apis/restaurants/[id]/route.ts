@@ -3,8 +3,7 @@ import {restaurantSchema} from "@/lib/schemas/restaurant"
 import {NextResponse} from "next/server"
 
 export async function PATCH(request: Request, { params }: { params: { id: string } }) {
-    const body = await request.json()
-    const {id} = body
+    const {id} = params
 
     if(!id) {
         return NextResponse.json(
@@ -26,9 +25,8 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-
     try {
-        const {id} =params
+        const {id} = await params
 
         if(!id) {
             return NextResponse.json(
@@ -36,14 +34,15 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
                 {status: 400}
             )
         }
-        const deletedRestaurant = deleteRestaurant(id)
         
-        if(!deletedRestaurant) {
+        const success = deleteRestaurant(id)
+        
+        if(!success) {
             return NextResponse.json({error: "Restaurant not found"}, {status: 404})
         }
+        
         return NextResponse.json({success: true})
-
-    }catch(error) {
-        return NextResponse.json({error: `Failed to delete restaurant: ${error}`}, {status: 500})
+    } catch (error) {
+        return NextResponse.json({error: "Failed to delete restaurant"}, {status: 500})
     }
 }

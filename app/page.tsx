@@ -60,7 +60,6 @@ export default function Home() {
 
       if(restaurant) {
         form.reset();
-        // Invalidate stale data
         queryClient.invalidateQueries({ queryKey: ['restaurants'] });
         toast.success("Restaurant added successfully!");
       } 
@@ -74,6 +73,31 @@ export default function Home() {
 
   const openForm = () => {
     setOpenModal(true)
+  }
+
+  const deleteRestaurant = async (id: string) => {
+    try {
+      const response = await fetch(`/apis/restaurants/${id}`, {
+        method: 'DELETE',
+      })
+
+      if(!response.ok) {
+        throw new Error(`Failed to delete restaurant`);
+      }
+            
+      if(response.ok) {
+        const {success} = await response.json()
+        if(success) {
+          toast.success("Restaurant deleted successfully!")
+          queryClient.invalidateQueries({ queryKey: ['restaurants'] });
+        }else{
+          throw new Error(`Failed to delete restaurant`);
+        }
+      }
+    }catch(error){
+      toast.error(`${error}`)
+      console.log(error)
+    }
   }
 
 
@@ -94,7 +118,7 @@ export default function Home() {
   return (
     <>
       <div className="flex flex-col min-h-screen items-center justify-center px-4">
-        <h1 className="text-4xl font-bold mb-8 text-slate-700">My Restaurant List</h1>
+        <h1 className="text-4xl font-bold mb-8 text-slate-700">MY RESTAURANT LIST</h1>
         
         <div className="w-full max-w-7xl">
           <div className="flex justify-end mb-6">
@@ -107,6 +131,7 @@ export default function Home() {
               <RestaurantCard 
                 key={restaurant.id} 
                 item={restaurant}
+                deleteRestaurant={deleteRestaurant}
               />
             ))}
           </div>
