@@ -1,8 +1,8 @@
 import {Restaurant} from  "@/types/restaurant"
-import {editRestaurantFormSchema} from "@/lib/schemas/restaurant"
+import {restaurantSchema} from "@/lib/schemas/restaurant"
 import {z} from "zod"
 
-type RestaurantUpdate = z.infer<typeof editRestaurantFormSchema>
+type RestaurantUpdate = z.infer<typeof restaurantSchema>
 
 let restaurants: Restaurant[] = [
     {

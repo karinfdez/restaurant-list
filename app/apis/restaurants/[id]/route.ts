@@ -2,7 +2,7 @@ import { updateRestaurant, deleteRestaurant } from "@/lib/db"
 import {restaurantSchema} from "@/lib/schemas/restaurant"
 import {NextResponse} from "next/server"
 
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
     const {id} = await params
 
     if(!id) {
@@ -27,7 +27,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 }
 
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const {id} = await params
 
