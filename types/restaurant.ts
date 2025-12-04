@@ -6,7 +6,7 @@ export type Restaurant = {
     image: string
     location: string
     rating?: number
-    priceRange: string
+    price: string
     reviews?: number
     description?: string
   }
@@ -17,7 +17,6 @@ export type Restaurant = {
     image: string
     location: string
     rating?: number
-    price: "$$" | "$$$" | "$$$$"
+    price: "$" | "$$" | "$$$"
     description?: string
-    priceRange: string
   }

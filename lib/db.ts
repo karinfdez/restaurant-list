@@ -1,13 +1,17 @@
 import {Restaurant} from  "@/types/restaurant"
+import {editRestaurantFormSchema} from "@/lib/schemas/restaurant"
+import {z} from "zod"
+
+type RestaurantUpdate = z.infer<typeof editRestaurantFormSchema>
 
 let restaurants: Restaurant[] = [
     {
         id: '1',
         name: 'La Mesa Dorada',
         type: 'Mexican',
-        image: '/images/rest-1.jpg',
+        image: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         location: '847 Valencia Street, San Francisco, CA',
-        priceRange: '$$$',
+        price: '$$$',
         rating: 4.8,
         reviews: 290,
         description: 'Authentic Mexican cuisine with handcrafted tortillas and premium tequila selection in a vibrant, colorful atmosphere.'
@@ -16,9 +20,9 @@ let restaurants: Restaurant[] = [
         id: '2',
         name: 'Sakura Sushi Bar',
         type: 'Japanese',
-        image: '/images/rest-2.jpg',
+        image: 'https://images.unsplash.com/photo-1556040220-4096d522378d?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         location: '1205 Pine Street, Seattle, WA',
-        priceRange: '$$$$',
+        price: '$$$$',
         rating: 4.9,
         reviews: 456,
         description: 'Traditional omakase experience with the freshest fish flown in daily from Tokyo\'s Tsukiji market.'
@@ -27,9 +31,9 @@ let restaurants: Restaurant[] = [
         id: '3',
         name: 'Nonna\'s Kitchen',
         type: 'Italian',
-        image: '/images/rest-3.jpg',
+        image: 'https://images.unsplash.com/photo-1651981075280-9a9e01acbff0?q=80&w=1313&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         location: '342 Mulberry Street, New York, NY',
-        priceRange: '$$',
+        price: '$$',
         rating: 4.6,
         reviews: 782,
         description: 'Family-owned trattoria serving homemade pasta and wood-fired pizzas using recipes passed down for generations.'
@@ -38,9 +42,9 @@ let restaurants: Restaurant[] = [
         id: '4',
         name: 'The Golden Spoon',
         type: 'French',
-        image: '/images/rest-4.jpg',
+        image: 'https://images.unsplash.com/photo-1652690772703-0461a655643d?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         location: '789 Bourbon Street, New Orleans, LA',
-        priceRange: '$$$$',
+        price: '$$$$',
         rating: 4.7,
         reviews: 234,
         description: 'Elegant French bistro featuring classic dishes with a modern Louisiana twist and an extensive wine cellar.'
@@ -49,9 +53,9 @@ let restaurants: Restaurant[] = [
         id: '5',
         name: 'Spice Route',
         type: 'Indian',
-        image: '/images/rest-5.jpg',
+        image: 'https://images.unsplash.com/photo-1652465485557-0e4fb899f3b8?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         location: '156 Devon Avenue, Chicago, IL',
-        priceRange: '$$',
+        price: '$$',
         rating: 4.4,
         reviews: 567,
         description: 'Aromatic Indian cuisine with traditional tandoor cooking and a diverse menu spanning multiple regional specialties.'
@@ -60,9 +64,9 @@ let restaurants: Restaurant[] = [
         id: '6',
         name: 'Blue Harbor Grill',
         type: 'Seafood',
-        image: '/images/rest-6.jpg',
+        image: 'https://images.unsplash.com/photo-1625861910621-e9385ba1d993?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         location: '2890 Ocean Drive, Miami, FL',
-        priceRange: '$$$',
+        price: '$$$',
         rating: 4.5,
         reviews: 389,
         description: 'Waterfront dining featuring the freshest local catch with panoramic views of Biscayne Bay and innovative preparations.'
@@ -71,9 +75,9 @@ let restaurants: Restaurant[] = [
         id: '7',
         name: 'Bangkok Street',
         type: 'Thai',
-        image: '/images/rest-7.jpg',
+        image: 'https://images.unsplash.com/photo-1652690772837-4f270f7f87a2?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         location: '445 University Avenue, Austin, TX',
-        priceRange: '$',
+        price: '$',
         rating: 4.3,
         reviews: 623,
         description: 'Authentic Thai street food in a casual setting with bold flavors and traditional recipes from Bangkok\'s markets.'
@@ -82,9 +86,9 @@ let restaurants: Restaurant[] = [
         id: '8',
         name: 'The Copper Kettle',
         type: 'American',
-        image: '/images/rest-8.jpg',
+        image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=1547&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         location: '1567 Main Street, Nashville, TN',
-        priceRange: '$$',
+        price: '$$',
         rating: 4.2,
         reviews: 445,
         description: 'Farm-to-table American cuisine featuring locally sourced ingredients and craft cocktails in a rustic, welcoming atmosphere.'
@@ -110,7 +114,7 @@ export function addRestaurant(restaurant: Omit<Restaurant, 'id'>) {
 
 export function updateRestaurant(
     id: string,
-    updates: Partial<Restaurant>
+    updates: RestaurantUpdate
 ): Restaurant | undefined {
     restaurants = restaurants.map((restaurant) => {
         return restaurant.id === id ? {...restaurant, ...updates} : restaurant
