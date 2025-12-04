@@ -59,6 +59,13 @@ A modern restaurant listing application built with Next.js that allows users to 
 4. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
+## Image Resources
+
+For restaurant images, you can use free photos from Unsplash:
+- **[Restaurant & Food Photos](https://unsplash.com/s/photos/restaurant-food?license=free)** - Free high-quality restaurant and food images
+
+Simply right-click on any image and copy the image URL to use in the restaurant form.
+
 ## Project Structure
 
 ```
