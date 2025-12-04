@@ -1,9 +1,9 @@
 // first commit
 'use client'
+import {useState, useEffect} from 'react'
 import {useQuery} from '@tanstack/react-query'
 import RestaurantCard from '@/components/restaurant-card'
 import {Button} from '@/components/ui/button'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { restaurantSchema } from '@/lib/schemas/restaurant'
@@ -32,6 +32,23 @@ export default function Home() {
       description: ""
     }
   })
+
+  // Reset form when modal opens and we're not editing
+  useEffect(() => {
+    if (openModal && !editingRestaurant) {
+      form.reset({
+        name: "",
+        type: "",
+        image: "",
+        location: "",
+        rating: undefined,
+        price: "$$",
+        description: ""
+      })
+    }
+  }, [openModal, editingRestaurant, form])
+
+
   const {data: restaurants, isLoading, error} = useQuery({
     queryKey: ['restaurants'],
     queryFn: async () => {
@@ -98,8 +115,7 @@ export default function Home() {
   };
 
   const openForm = () => {
-    form.reset() // Clear the form
-    setEditingRestaurant(null) // Reset the editing restaurant
+    setEditingRestaurant(null) // Reset the editing restaurant first
     setOpenModal(true)
   }
 
@@ -186,7 +202,12 @@ export default function Home() {
         </div>
       </div>
       {openModal && (
-        <NewRestaurantForm form={form} setOpenModal={setOpenModal} onSubmit={onSubmit} isEditing={!!editingRestaurant}/>
+        <NewRestaurantForm 
+          form={form} 
+          setOpenModal={setOpenModal} 
+          onSubmit={onSubmit} 
+          isEditing={!!editingRestaurant}
+        />
       )}
     </>
   );

@@ -7,17 +7,8 @@ import {Textarea} from '@/components/ui/textarea'
 import {Button} from '@/components/ui/button'
 import {NewRestaurantFormData} from '@/types/restaurant'
 import {UseFormReturn} from 'react-hook-form'
-import { useEffect } from 'react'
 
 export const NewRestaurantForm = ({form, onSubmit, setOpenModal, isEditing = false}: {form: UseFormReturn<NewRestaurantFormData>, onSubmit: (data: NewRestaurantFormData) => void, setOpenModal: (open: boolean) => void, isEditing?: boolean}) => {
-
-
-  useEffect(() => {
-    console.log('isEditing', isEditing)
-    if(!isEditing) {
-      form.reset()
-    }
-  }, [isEditing, form])
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 flex items-center justify-center p-4">
         <div className="bg-white p-6 w-full max-w-md">
