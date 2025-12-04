@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { restaurantSchema } from '@/lib/schemas/restaurant'
-import {NewRestaurantForm} from '@/components/new-restaurant-form'
+import {NewRestaurantForm} from '@/components/restaurant-form'
 import {NewRestaurantFormData} from '@/types/restaurant'
 import { toast } from "sonner"
 import {Skeleton} from '@/components/ui/skeleton'
@@ -17,6 +17,8 @@ import {Restaurant} from '@/types/restaurant'
 export default function Home() {
 
   const [openModal, setOpenModal] = useState(false)
+  // To track which restaurant is being edited
+  const [editingRestaurant, setEditingRestaurant] = useState<Restaurant | null>(null)
   const queryClient = useQueryClient()
   const form = useForm({
     resolver: zodResolver(restaurantSchema),
@@ -43,28 +45,51 @@ export default function Home() {
   })
 
   const onSubmit = async (data: NewRestaurantFormData) => {
-
     try {
-      const response = await fetch('/apis/restaurants', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
+      if (editingRestaurant) {
+        // Edit existing restaurant
+        const response = await fetch(`/apis/restaurants/${editingRestaurant.id}`, {
+          method: 'PATCH',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
 
-      const {restaurant} = await response.json();
-      
-      if (!response.ok || !restaurant) {
-          throw new Error(`Failed to add restaurant`);
+        if (!response.ok) {
+          throw new Error(`Failed to edit restaurant`);
+        }
+
+        const {restaurant} = await response.json();
+        if (restaurant) {
+          queryClient.invalidateQueries({ queryKey: ['restaurants'] });
+          toast.success("Restaurant updated successfully!");
+        }
+      } else {
+        // Add new restaurant
+        const response = await fetch('/apis/restaurants', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+
+        const {restaurant} = await response.json();
+        
+        if (!response.ok || !restaurant) {
+            throw new Error(`Failed to add restaurant`);
+        }
+
+        if(restaurant) {
+          toast.success("Restaurant added successfully!");
+          queryClient.invalidateQueries({ queryKey: ['restaurants'] });
+        } 
       }
-
-      if(restaurant) {
-        form.reset();
-        queryClient.invalidateQueries({ queryKey: ['restaurants'] });
-        toast.success("Restaurant added successfully!");
-      } 
+      
+      form.reset();
       setOpenModal(false);
+      setEditingRestaurant(null);
 
     }catch(error){
       toast.error(`${error}`)
@@ -73,6 +98,23 @@ export default function Home() {
   };
 
   const openForm = () => {
+    form.reset() // Clear the form
+    setEditingRestaurant(null) // Reset the editing restaurant
+    setOpenModal(true)
+  }
+
+  const openEditForm = (restaurant: Restaurant) => {
+    setEditingRestaurant(restaurant)
+    //  Prepopulate the form
+    form.reset({
+      name: restaurant.name,
+      type: restaurant.type,
+      image: restaurant.image,
+      location: restaurant.location,
+      rating: restaurant.rating,
+      price: restaurant.price as "$" | "$$" | "$$$",
+      description: restaurant.description || ""
+    })
     setOpenModal(true)
   }
 
@@ -102,6 +144,7 @@ export default function Home() {
   }
 
 
+
   if (isLoading) {
     return (
       <Skeleton className="h-9 w-full" />
@@ -118,7 +161,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen items-center justify-center px-4">
+      <div className="flex flex-col min-h-screen items-center justify-start px-4 py-8">
         <h1 className="text-4xl font-bold mb-8 text-slate-700">MY RESTAURANT LIST</h1>
         
         <div className="w-full max-w-7xl">
@@ -133,6 +176,7 @@ export default function Home() {
                 key={restaurant.id} 
                 item={restaurant}
                 deleteRestaurant={deleteRestaurant}
+                editRestaurant={openEditForm}
               />
             ))}
           </div>
@@ -142,7 +186,7 @@ export default function Home() {
         </div>
       </div>
       {openModal && (
-        <NewRestaurantForm form={form} setOpenModal={setOpenModal} onSubmit={onSubmit}/>
+        <NewRestaurantForm form={form} setOpenModal={setOpenModal} onSubmit={onSubmit} isEditing={!!editingRestaurant}/>
       )}
     </>
   );

@@ -3,7 +3,7 @@ import {restaurantSchema} from "@/lib/schemas/restaurant"
 import {NextResponse} from "next/server"
 
 export async function PATCH(request: Request, { params }: { params: { id: string } }) {
-    const {id} = params
+    const {id} = await params
 
     if(!id) {
         return NextResponse.json(
@@ -11,6 +11,8 @@ export async function PATCH(request: Request, { params }: { params: { id: string
             {status: 400}
         )
     }
+
+    const body = await request.json()
 
     const validatedData = restaurantSchema.safeParse(body)
 
@@ -20,7 +22,8 @@ export async function PATCH(request: Request, { params }: { params: { id: string
             {status: 400}
         )
     }
-    return updateRestaurant(id, validatedData.data)
+    const restaurant = updateRestaurant(id, validatedData.data)
+    return NextResponse.json({restaurant}, {status: 200})
 }
 
 

@@ -23,7 +23,7 @@ export async function POST(request: Request) {
         const { price, ...rest } = validatedData.data
         const restaurant = addRestaurant({
             ...rest,
-            priceRange: price
+            price
         })
 
         return NextResponse.json({restaurant}, {status: 201})

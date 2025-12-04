@@ -9,16 +9,19 @@ import {NewRestaurantFormData} from '@/types/restaurant'
 import {UseFormReturn} from 'react-hook-form'
 import { useEffect } from 'react'
 
-export const NewRestaurantForm = ({form, onSubmit, setOpenModal}: {form: UseFormReturn<NewRestaurantFormData>, onSubmit: (data: NewRestaurantFormData) => void, setOpenModal: (open: boolean) => void}) => {
-    
-    useEffect(() => {
-        form.reset();
-    }, [form]);
+export const NewRestaurantForm = ({form, onSubmit, setOpenModal, isEditing = false}: {form: UseFormReturn<NewRestaurantFormData>, onSubmit: (data: NewRestaurantFormData) => void, setOpenModal: (open: boolean) => void, isEditing?: boolean}) => {
 
+
+  useEffect(() => {
+    console.log('isEditing', isEditing)
+    if(!isEditing) {
+      form.reset()
+    }
+  }, [isEditing, form])
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 flex items-center justify-center p-4">
         <div className="bg-white p-6 w-full max-w-md">
-          <h2 className="text-xl font-bold mb-4">Add New Restaurant</h2>
+          <h2 className="text-xl font-bold mb-4">{isEditing ? 'Edit Restaurant' : 'Add New Restaurant'}</h2>
           <Form {...form}>
             <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
@@ -72,32 +75,12 @@ export const NewRestaurantForm = ({form, onSubmit, setOpenModal}: {form: UseForm
                     <div className="space-y-2">
                       <FormControl>
                         <Input 
-                          type="file" 
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              // Convert file to base64 or handle upload
-                              const reader = new FileReader();
-                              reader.onload = (event) => {
-                                field.onChange(event.target?.result as string);
-                              };
-                              reader.readAsDataURL(file);
-                            }
-                          }}
+                          type="text" 
+                          onChange={(e) => field.onChange(e.target.value)}
+                          value={field.value}
                           className="cursor-pointer"
                         />
                       </FormControl>
-                      {/* <div className="text-sm text-muted-foreground">
-                        Or enter an Unsplash URL:
-                      </div>
-                      <FormControl>
-                        <Input 
-                          placeholder="https://unsplash.com/photos/..." 
-                          value={typeof field.value === 'string' && field.value.startsWith('http') ? field.value : ''}
-                          onChange={(e) => field.onChange(e.target.value)}
-                        />
-                      </FormControl> */}
                     </div>
                     <FormMessage />
                   </FormItem>
@@ -110,16 +93,16 @@ export const NewRestaurantForm = ({form, onSubmit, setOpenModal}: {form: UseForm
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Price Range</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select price range" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
+                        <SelectItem value="$">$ - Budget</SelectItem>
                         <SelectItem value="$$">$$ - Moderate</SelectItem>
                         <SelectItem value="$$$">$$$ - Expensive</SelectItem>
-                        <SelectItem value="$$$$">$$$$ - Very Expensive</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -164,7 +147,7 @@ export const NewRestaurantForm = ({form, onSubmit, setOpenModal}: {form: UseForm
               />
               
               <div className="flex gap-2 pt-4">
-                <Button type="submit" variant="solid" className="flex-1">Add Restaurant</Button>
+                <Button type="submit" variant="solid" className="flex-1">{isEditing ? 'Update Restaurant' : 'Add Restaurant'}</Button>
                 <Button type="button" onClick={() => setOpenModal(false)}>Cancel</Button>
               </div>
             </form>
