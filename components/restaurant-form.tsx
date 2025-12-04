@@ -84,7 +84,7 @@ export const NewRestaurantForm = ({form, onSubmit, setOpenModal, isEditing = fal
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Price Range</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value || ""}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select price range" />
